@@ -28,10 +28,7 @@ import ru.yandex.practicum.contacts.presentation.base.ListDiffInterface;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
-    private final AsyncListDiffer<ContactUi> differ = new AsyncListDiffer<>(
-            new AdapterListUpdateCallback(this),
-            new AsyncDifferConfig.Builder<>(new BaseListDiffCallback<ContactUi>()).build()
-    );
+    private final AsyncListDiffer<ContactUi> differ = new AsyncListDiffer<>(new AdapterListUpdateCallback(this), new AsyncDifferConfig.Builder<>(new BaseListDiffCallback<ContactUi>()).build());
 
     @NonNull
     @Override
@@ -85,37 +82,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             final Context context = binding.contactPhoto.getContext();
             final Drawable drawable = Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_avatar));
             drawable.setTint(ContextCompat.getColor(context, R.color.color_light_grey));
-            Glide.with(binding.contactPhoto)
-                    .load(contact.getPhoto())
-                    .circleCrop()
-                    .placeholder(drawable)
-                    .fallback(drawable)
-                    .error(drawable)
-                    .into(binding.contactPhoto);
+            Glide.with(binding.contactPhoto).load(contact.getPhoto()).circleCrop().placeholder(drawable).fallback(drawable).error(drawable).into(binding.contactPhoto);
         }
     }
 
-    static class ListDiffCallback extends DiffUtil.ItemCallback<ContactUi> implements ListDiffInterface<ContactUi> {
-
-        @Override
-        public boolean areItemsTheSame(@NonNull ContactUi oldItem, @NonNull ContactUi newItem) {
-            return oldItem.hashCode() == newItem.hashCode();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull ContactUi oldItem, @NonNull ContactUi newItem) {
-            return oldItem.equals(newItem);
-        }
-
-        @Nullable
-        @Override
-        public Object getChangePayload(@NonNull ContactUi oldItem, @NonNull ContactUi newItem) {
-            return newItem;
-        }
-
-        @Override
-        public boolean theSameAs(ContactUi contactUi) {
-            return this.hashCode() == contactUi.hashCode();
-        }
-    }
 }
