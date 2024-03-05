@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import ru.yandex.practicum.contacts.R;
 import ru.yandex.practicum.contacts.databinding.ItemContactBinding;
+import ru.yandex.practicum.contacts.presentation.base.ListDiffInterface;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
@@ -93,7 +94,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
     }
 
-    static class ListDiffCallback extends DiffUtil.ItemCallback<ContactUi> {
+    static class ListDiffCallback extends DiffUtil.ItemCallback<ContactUi> implements ListDiffInterface<ContactUi> {
 
         @Override
         public boolean areItemsTheSame(@NonNull ContactUi oldItem, @NonNull ContactUi newItem) {
@@ -109,6 +110,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         @Override
         public Object getChangePayload(@NonNull ContactUi oldItem, @NonNull ContactUi newItem) {
             return newItem;
+        }
+
+        @Override
+        public boolean theSameAs(ContactUi contactUi) {
+            return this.hashCode() == contactUi.hashCode();
         }
     }
 }
